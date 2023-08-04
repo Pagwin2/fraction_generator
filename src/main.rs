@@ -17,20 +17,29 @@ impl Add for Frac{
 fn main()->anyhow::Result<()>{
     let mut fracs = Vec::<Frac>::new();
     fracs.reserve_exact(2_usize.pow(16)+1);
+
+    // gotta seed the list with 2 starting values due to the algorithm being used(these are the
+    // upper and lower bounds)
     fracs.push(Frac(0,1));
     fracs.push(Frac(1,0));
-    for i in 0..19{
+
+    #[allow(non_upper_case_globals)]
+    const iterations:usize = 19;
+
+    for i in 0..iterations{
         //if i%10 ==0 {
         //    eprintln!("{}\t{}",i,fracs.len());
         //}
         eprintln!("{}",i);
         step(&mut fracs);
     }
+
     let mut opts = OpenOptions::new();
     let mut file = opts.create(true)
         .write(true)
         .append(true)
         .open("./fracts")?;
+    // might be worth adding some logic to add line numbers and remove 1/0
     for frac in fracs{
         let _ = file.write_fmt(format_args!("{}/{}\n",frac.0,frac.1));
     }
