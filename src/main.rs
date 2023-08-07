@@ -7,7 +7,7 @@ use std::ops::Add;
 
 
 #[derive(Clone, Copy)]
-struct Frac(u16,u16);
+struct Frac(u32,u32);
 
 impl Add for Frac{
     type Output = Self;
@@ -18,7 +18,7 @@ impl Add for Frac{
 
 //#[tokio::main]
 fn main()->anyhow::Result<()>{
-    const RECURSIONS:u64 = 25;
+    const RECURSIONS:u64 = 32;
 
     let prog = indicatif::ProgressBar::new(2_u64.pow(RECURSIONS as u32)-1);
     let fracs = recurse(Frac(0,1),Frac(1,0),RECURSIONS,Some(prog));
